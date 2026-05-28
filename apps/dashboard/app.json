@@ -1,0 +1,18 @@
+{
+  "expo": {
+    "name": "Ody Dashboard",
+    "slug": "ody-dashboard",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "scheme": "ody-dashboard",
+    "userInterfaceStyle": "light",
+    "web": {
+      "bundler": "metro",
+      "output": "single"
+    },
+    "plugins": ["expo-router"],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

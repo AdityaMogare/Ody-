@@ -1,0 +1,27 @@
+{
+  "name": "ody-assignment",
+  "private": true,
+  "packageManager": "pnpm@9.15.4",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev:dashboard": "turbo dev --filter=@ody/dashboard",
+    "dev:backend": "turbo dev --filter=@ody/backend",
+    "gen:contract": "pnpm --filter @ody/backend openapi:export && OPENAPI_FILE=../../openapi.json pnpm --filter @ody/api-client gen:contract",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "test": "turbo test",
+    "build": "turbo build"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "prettier": "^3.4.2",
+    "turbo": "^2.3.3",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2",
+    "vitest": "^2.1.8",
+    "wrangler": "^4.95.0"
+  }
+}

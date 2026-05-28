@@ -1,0 +1,16 @@
+node_modules
+.turbo
+dist
+.wrangler
+.expo
+expo-env.d.ts
+*.log
+.env
+.env.*
+!.env.example
+.dev.vars
+!.dev.vars.example
+services/backend/.dev.vars
+.DS_Store
+coverage
+*.tsbuildinfo

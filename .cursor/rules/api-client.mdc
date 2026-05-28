@@ -1,0 +1,12 @@
+---
+description: Orval-generated API client — never edit generated output
+globs: packages/api-client/**
+alwaysApply: false
+---
+
+# @ody/api-client
+
+- **Never hand-edit** `packages/api-client/src/generated/**`.
+- Wrong types or hooks → fix OpenAPI in `services/backend` (routes/schemas), then run `pnpm gen:contract`.
+- Safe to edit: `orval.config.ts`, `src/mutator.ts`, `src/index.ts`.
+- Dashboard must import API types/hooks from `@ody/api-client` only (no handwritten DTOs or raw fetch).
