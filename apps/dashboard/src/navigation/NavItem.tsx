@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { useRouter } from "expo-router";
 import { Pressable, Text, View } from "react-native";
 
 import { useStyles } from "../design-system/createStyles";
@@ -84,6 +84,7 @@ function createNavItemStyles(t: Theme) {
 }
 
 export function NavItem({ route, pathname, layout, badgeCount = 0 }: NavItemProps) {
+  const router = useRouter();
   const theme = useTheme();
   const styles = useStyles(createNavItemStyles);
   const active = isTabActive(pathname, route.href);
@@ -93,15 +94,15 @@ export function NavItem({ route, pathname, layout, badgeCount = 0 }: NavItemProp
   const badgeLabel = badgeCount > 99 ? "99+" : String(badgeCount);
 
   return (
-    <Link href={route.href} asChild>
-      <Pressable
-        accessibilityRole="tab"
-        accessibilityState={{ selected: active }}
-        style={[
-          layout === "sidebar" ? styles.sidebarPressable : styles.tabPressable,
-          active && styles.active,
-        ]}
-      >
+    <Pressable
+      accessibilityRole="tab"
+      accessibilityState={{ selected: active }}
+      onPress={() => router.push(route.href)}
+      style={[
+        layout === "sidebar" ? styles.sidebarPressable : styles.tabPressable,
+        active && styles.active,
+      ]}
+    >
         <View style={styles.iconWrap}>
           <Ionicons name={iconName} size={layout === "sidebar" ? 22 : 24} color={iconColor} />
           {layout === "tab" && showBadge ? (
@@ -124,7 +125,6 @@ export function NavItem({ route, pathname, layout, badgeCount = 0 }: NavItemProp
             <Text style={styles.badgeText}>{badgeLabel}</Text>
           </View>
         ) : null}
-      </Pressable>
-    </Link>
+    </Pressable>
   );
 }

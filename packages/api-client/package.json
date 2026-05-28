@@ -3,6 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
+  "main": "./src/index.ts",
+  "react-native": "./src/index.ts",
   "exports": {
     ".": {
       "types": "./src/index.ts",
@@ -10,7 +12,7 @@
     }
   },
   "scripts": {
-    "gen:contract": "orval --config orval.config.ts",
+    "gen:contract": "OPENAPI_FILE=../../openapi.json orval --config orval.config.ts",
     "gen:contract:live": "orval --config orval.config.ts",
     "build": "tsc --noEmit",
     "typecheck": "tsc --noEmit",

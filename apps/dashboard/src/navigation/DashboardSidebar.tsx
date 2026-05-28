@@ -3,7 +3,6 @@ import { Platform, Text, View } from "react-native";
 
 import { useStyles } from "../design-system/createStyles";
 import type { Theme } from "../design-system/theme";
-import { useTheme } from "../design-system/theme";
 import { layout } from "../design-system/tokens";
 import { NavItem } from "./NavItem";
 import { TAB_ROUTES } from "./routes";
@@ -19,7 +18,7 @@ function createSidebarStyles(t: Theme) {
       paddingVertical: t.spacing[5],
       paddingHorizontal: t.spacing[3],
       gap: t.spacing[2],
-      ...(Platform.OS === "web" ? { height: "100vh" as unknown as number } : { flex: 1 }),
+      flex: 1,
     },
     brand: {
       paddingHorizontal: t.spacing[3],
@@ -40,13 +39,20 @@ function createSidebarStyles(t: Theme) {
 }
 
 export function DashboardSidebar() {
-  const theme = useTheme();
   const styles = useStyles(createSidebarStyles);
   const pathname = usePathname();
   const pendingCount = usePendingOrderCount();
 
   return (
-    <View style={styles.sidebar}>
+    <View
+      style={[
+        styles.sidebar,
+        Platform.OS === "web" && {
+          alignSelf: "stretch",
+          minHeight: "100%",
+        },
+      ]}
+    >
       <View style={styles.brand}>
         <Text style={styles.brandTitle}>Ody</Text>
         <Text style={styles.brandSubtitle}>Restaurant ops</Text>

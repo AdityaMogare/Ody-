@@ -9,6 +9,7 @@ import {
 import { Pressable, Text, View } from "react-native";
 
 import { useStyles } from "../createStyles";
+import { platformShadow } from "../platformShadow";
 import { useTheme, type Theme } from "../theme";
 import type { BadgeVariant } from "./Badge";
 
@@ -57,7 +58,7 @@ function createToastStyles(t: Theme) {
       borderRadius: t.radii.md,
       borderWidth: 1,
       padding: t.spacing[3],
-      ...t.shadows.md,
+      ...platformShadow("md", t),
     },
     title: {
       fontSize: t.typography.fontSize.sm,

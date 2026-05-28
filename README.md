@@ -17,29 +17,37 @@ packages/api-client     Orval-generated React Query client
 - Node.js 20+
 - pnpm 9+
 
-## Scripts
+## Development scripts
+
+Run these from the repository root (no `cd` into packages required).
 
 | Command | Description |
 | --- | --- |
-| `pnpm dev:dashboard` | Start Expo web dashboard |
-| `pnpm dev:backend` | Start Wrangler dev server |
-| `pnpm gen:contract` | Generate OpenAPI → Orval client (Phase 2) |
-| `pnpm lint` | Lint all packages |
-| `pnpm typecheck` | Typecheck all packages |
-| `pnpm test` | Run tests |
-| `pnpm build` | Build all packages |
+| `pnpm dev:dashboard` | Start the Expo web dashboard (`expo start --web` in `apps/dashboard`). |
+| `pnpm dev:backend` | Start the Hono API locally with Wrangler (`wrangler dev` in `services/backend`). |
+| `pnpm gen:contract` | Export `openapi.json` from the backend and regenerate `@ody/api-client` with Orval. |
+| `pnpm lint` | Run ESLint in every workspace package. |
+| `pnpm typecheck` | Type-check all packages in dependency order (after upstream builds and contract generation). |
+| `pnpm test` | Run Vitest in `services/backend` and `apps/dashboard` (fails if either suite fails). |
+| `pnpm build` | Build all packages via Turborepo. |
+| `pnpm db:migrate` | Apply Drizzle migrations to the configured Postgres database. |
+| `pnpm db:seed` | Seed the database with sample restaurant data. |
 
 ## Local development
 
 ```bash
 pnpm install
+pnpm gen:contract
 pnpm build
 pnpm typecheck
 pnpm test
 pnpm lint
 
+pnpm db:migrate
+pnpm db:seed
+
 pnpm dev:backend    # http://127.0.0.1:8787/health
-pnpm dev:dashboard  # Expo web (default port 8081) → /menu, /ui-library
+pnpm dev:dashboard  # Expo web (default port 8081)
 ```
 
 ## Dashboard routes

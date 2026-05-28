@@ -10,18 +10,24 @@
       "cache": false,
       "persistent": true
     },
-    "lint": {
-      "dependsOn": ["^build"]
-    },
-    "typecheck": {
-      "dependsOn": ["^typecheck"]
-    },
-    "test": {
-      "dependsOn": ["^build"]
+    "openapi:export": {
+      "cache": false,
+      "outputs": ["../../openapi.json"]
     },
     "gen:contract": {
+      "dependsOn": ["@ody/backend#openapi:export"],
       "cache": false,
       "outputs": ["src/generated/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "typecheck": {
+      "dependsOn": ["^build", "^gen:contract", "gen:contract"]
+    },
+    "test": {
+      "dependsOn": ["gen:contract"],
+      "cache": false
     }
   }
 }

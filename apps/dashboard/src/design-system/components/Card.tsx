@@ -1,6 +1,7 @@
 import { View, type StyleProp, type ViewProps, type ViewStyle } from "react-native";
 
 import { useStyles } from "../createStyles";
+import { platformShadow } from "../platformShadow";
 import type { Theme } from "../theme";
 
 export type CardVariant = "elevated" | "outlined" | "muted";
@@ -19,7 +20,7 @@ function createCardStyles(t: Theme) {
     },
     elevated: {
       backgroundColor: t.semantic.surface,
-      ...t.shadows.md,
+      ...platformShadow("md", t),
     },
     outlined: {
       backgroundColor: t.semantic.surface,

@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 
 import type { AppEnv } from "../env";
 import { orders } from "../db/schema";
-import { badRequest, notFound, unprocessableEntity } from "../lib/errors";
+import { notFound, unprocessableEntity } from "../lib/errors";
 import {
   CreateOrderBodySchema,
   ErrorSchema,

@@ -11,7 +11,15 @@ export function DashboardShell() {
 
   if (isWeb) {
     return (
-      <View style={{ flex: 1, flexDirection: "row", backgroundColor: theme.semantic.background }}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          width: "100%",
+          minHeight: "100%",
+          backgroundColor: theme.semantic.background,
+        }}
+      >
         <DashboardSidebar />
         <View style={{ flex: 1, minWidth: 0 }}>
           <Slot />

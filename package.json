@@ -8,11 +8,13 @@
   "scripts": {
     "dev:dashboard": "turbo dev --filter=@ody/dashboard",
     "dev:backend": "turbo dev --filter=@ody/backend",
-    "gen:contract": "pnpm --filter @ody/backend openapi:export && OPENAPI_FILE=../../openapi.json pnpm --filter @ody/api-client gen:contract",
+    "gen:contract": "turbo run openapi:export gen:contract",
     "lint": "turbo lint",
     "typecheck": "turbo typecheck",
-    "test": "turbo test",
-    "build": "turbo build"
+    "test": "turbo run test --filter=@ody/backend --filter=@ody/dashboard",
+    "build": "turbo build",
+    "db:migrate": "pnpm --filter @ody/backend db:migrate",
+    "db:seed": "pnpm --filter @ody/backend db:seed"
   },
   "devDependencies": {
     "@eslint/js": "^9.17.0",

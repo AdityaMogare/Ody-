@@ -1,5 +1,11 @@
 import { useEffect, useRef } from "react";
-import { Animated, View, type StyleProp, type ViewStyle } from "react-native";
+import {
+  Animated,
+  Platform,
+  View,
+  type StyleProp,
+  type ViewStyle,
+} from "react-native";
 
 import { useStyles } from "../createStyles";
 import { useTheme } from "../theme";
@@ -34,30 +40,48 @@ export function Skeleton({
   const styles = useStyles(createSkeletonStyles);
   const { radii } = useTheme();
   const opacity = useRef(new Animated.Value(0.35)).current;
+  const isWeb = Platform.OS === "web";
 
   useEffect(() => {
+    if (isWeb) return;
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(opacity, { toValue: 1, duration: 700, useNativeDriver: true }),
-        Animated.timing(opacity, { toValue: 0.35, duration: 700, useNativeDriver: true }),
+        Animated.timing(opacity, {
+          toValue: 1,
+          duration: 700,
+          useNativeDriver: true,
+        }),
+        Animated.timing(opacity, {
+          toValue: 0.35,
+          duration: 700,
+          useNativeDriver: true,
+        }),
       ]),
     );
     loop.start();
     return () => loop.stop();
-  }, [opacity]);
+  }, [isWeb, opacity]);
+
+  const boneStyle = [
+    styles.bone,
+    {
+      width,
+      height,
+      borderRadius: borderRadius ?? radii.sm,
+    },
+    style,
+  ];
+
+  if (isWeb) {
+    return (
+      <View style={boneStyle}>
+        <View style={[styles.shimmer, { flex: 1, opacity: 0.55 }]} />
+      </View>
+    );
+  }
 
   return (
-    <View
-      style={[
-        styles.bone,
-        {
-          width,
-          height,
-          borderRadius: borderRadius ?? radii.sm,
-        },
-        style,
-      ]}
-    >
+    <View style={boneStyle}>
       <Animated.View style={[styles.shimmer, { flex: 1, opacity }]} />
     </View>
   );
