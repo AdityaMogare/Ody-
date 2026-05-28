@@ -87,7 +87,8 @@ describe("OrderDetailDrawer", () => {
   it("renders customer name and order items", () => {
     renderDrawer(buildOrder());
     expect(screen.getByText("Jane Doe")).toBeTruthy();
-    expect(screen.getByText(/Burger x2/)).toBeTruthy();
+    expect(screen.getByText("Burger")).toBeTruthy();
+    expect(screen.getByText(/× 2/)).toBeTruthy();
   });
 
   it("shows only valid action buttons for pending status", () => {

@@ -2,24 +2,18 @@ import { useGetCustomersId, type OrderWithItems } from "@ody/api-client";
 import { useMemo } from "react";
 import { Pressable, ScrollView, Text, View } from "react-native";
 
+import { DrawerStat } from "../../components/drawer/DrawerStat";
+import { DrawerSectionTitle } from "../../components/drawer/DrawerSectionTitle";
 import { Badge, Drawer, EmptyState, Skeleton, useTheme } from "../../design-system";
 import { useCustomerStats } from "../../hooks/useCustomerStats";
 import { formatPriceCents } from "../../lib/menu";
+import { formatOrderStatusLabel, orderStatusVariant } from "../../lib/orderStatus";
 
 type CustomerDetailDrawerProps = {
   customerId: string | null;
   onClose: () => void;
   onOpenOrder: (order: OrderWithItems) => void;
 };
-
-function orderStatusVariant(
-  status: OrderWithItems["status"],
-): "success" | "error" | "info" | "warning" {
-  if (status === "completed") return "success";
-  if (status === "cancelled") return "error";
-  if (status === "ready") return "info";
-  return "warning";
-}
 
 export function CustomerDetailDrawer({
   customerId,
@@ -65,13 +59,13 @@ export function CustomerDetailDrawer({
           </View>
 
           <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing[3] }}>
-            <Stat label="Total orders" value={String(stats.orderCount)} theme={theme} />
-            <Stat
+            <DrawerStat label="Total orders" value={String(stats.orderCount)} theme={theme} />
+            <DrawerStat
               label="Lifetime spend"
               value={formatPriceCents(stats.lifetimeSpendCents)}
               theme={theme}
             />
-            <Stat
+            <DrawerStat
               label="Avg order value"
               value={formatPriceCents(stats.averageOrderValueCents)}
               theme={theme}
@@ -79,15 +73,7 @@ export function CustomerDetailDrawer({
           </View>
 
           <View style={{ gap: theme.spacing[2] }}>
-            <Text
-              style={{
-                fontSize: theme.typography.fontSize.md,
-                fontWeight: theme.typography.fontWeight.semibold,
-                color: theme.semantic.text,
-              }}
-            >
-              Order history
-            </Text>
+            <DrawerSectionTitle title="Order history" theme={theme} />
             {orders.length === 0 ? (
               <EmptyState title="No orders yet" message="This customer has not placed any orders." />
             ) : (
@@ -113,7 +99,10 @@ export function CustomerDetailDrawer({
                       {new Date(order.createdAt).toLocaleString()}
                     </Text>
                   </View>
-                  <Badge label={order.status} variant={orderStatusVariant(order.status)} />
+                  <Badge
+                    label={formatOrderStatusLabel(order.status)}
+                    variant={orderStatusVariant(order.status)}
+                  />
                   <Text style={{ color: theme.semantic.text }}>
                     {formatPriceCents(order.totalCents)}
                   </Text>
@@ -124,42 +113,5 @@ export function CustomerDetailDrawer({
         </ScrollView>
       )}
     </Drawer>
-  );
-}
-
-function Stat({
-  label,
-  value,
-  theme,
-}: {
-  label: string;
-  value: string;
-  theme: ReturnType<typeof useTheme>;
-}) {
-  return (
-    <View
-      style={{
-        minWidth: 120,
-        padding: theme.spacing[3],
-        borderRadius: theme.radii.md,
-        borderWidth: 1,
-        borderColor: theme.semantic.border,
-        backgroundColor: theme.semantic.surfaceMuted,
-        gap: theme.spacing[1],
-      }}
-    >
-      <Text style={{ color: theme.semantic.textMuted, fontSize: theme.typography.fontSize.xs }}>
-        {label}
-      </Text>
-      <Text
-        style={{
-          color: theme.semantic.text,
-          fontSize: theme.typography.fontSize.md,
-          fontWeight: theme.typography.fontWeight.semibold,
-        }}
-      >
-        {value}
-      </Text>
-    </View>
   );
 }

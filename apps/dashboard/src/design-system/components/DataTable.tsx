@@ -31,11 +31,13 @@ export type DataTableProps<T> = {
   loadingRows?: number;
   style?: StyleProp<ViewStyle>;
   onRowPress?: (row: T) => void;
+  hoverable?: boolean;
 };
 
 function createTableStyles(t: Theme) {
   return {
     wrap: {
+      width: "100%" as const,
       borderWidth: 1,
       borderColor: t.semantic.border,
       borderRadius: t.radii.lg,
@@ -50,17 +52,26 @@ function createTableStyles(t: Theme) {
     },
     headerCell: {
       paddingHorizontal: t.spacing[3],
-      paddingVertical: t.spacing[2],
+      paddingVertical: t.spacing[3],
       fontSize: t.typography.fontSize.xs,
       fontWeight: t.typography.fontWeight.semibold,
       color: t.semantic.textMuted,
       textTransform: "uppercase" as const,
+      letterSpacing: 0.4,
     },
     row: {
       flexDirection: "row" as const,
       borderBottomWidth: 1,
       borderBottomColor: t.semantic.border,
       alignItems: "center" as const,
+    },
+    rowHovered: {
+      backgroundColor: t.semantic.surfaceMuted,
+    },
+    cell: {
+      paddingHorizontal: t.spacing[3],
+      paddingVertical: t.spacing[3],
+      justifyContent: "center" as const,
     },
     errorBox: {
       padding: t.spacing[4],
@@ -86,6 +97,7 @@ export function DataTable<T>({
   loadingRows = 4,
   style,
   onRowPress,
+  hoverable = true,
 }: DataTableProps<T>) {
   const styles = useStyles(createTableStyles);
 
@@ -138,25 +150,33 @@ export function DataTable<T>({
       <ScrollView>
         {data.map((row) => {
           const cells = columns.map((col) => (
-            <View key={col.key} style={{ flex: col.flex ?? 1, width: col.width }}>
+            <View
+              key={col.key}
+              style={[styles.cell, { flex: col.flex ?? 1, width: col.width }]}
+            >
               {col.render(row)}
             </View>
           ));
 
-          if (!onRowPress) {
+          const rowStyle = (state: { pressed: boolean; hovered?: boolean }) => [
+            styles.row,
+            hoverable && (state.pressed || state.hovered) && styles.rowHovered,
+          ];
+
+          if (onRowPress) {
             return (
-              <View key={keyExtractor(row)} style={styles.row}>
+              <Pressable
+                key={keyExtractor(row)}
+                onPress={() => onRowPress(row)}
+                style={rowStyle}
+              >
                 {cells}
-              </View>
+              </Pressable>
             );
           }
 
           return (
-            <Pressable
-              key={keyExtractor(row)}
-              onPress={() => onRowPress(row)}
-              style={({ pressed }) => [styles.row, pressed && { opacity: 0.92 }]}
-            >
+            <Pressable key={keyExtractor(row)} style={rowStyle}>
               {cells}
             </Pressable>
           );

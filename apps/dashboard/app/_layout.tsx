@@ -9,10 +9,6 @@ export default function RootLayout() {
       <StatusBar style="auto" />
       <Stack screenOptions={{ headerShown: false }}>
         <Stack.Screen name="(tabs)" />
-        <Stack.Screen
-          name="ui-library"
-          options={{ headerShown: true, title: "UI Library" }}
-        />
         <Stack.Screen name="+not-found" options={{ headerShown: true, title: "Not found" }} />
       </Stack>
     </AppProviders>

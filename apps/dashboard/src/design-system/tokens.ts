@@ -40,6 +40,10 @@ export const colors = {
   info50: "#eff6ff",
   info500: "#3b82f6",
   info700: "#1d4ed8",
+
+  violet50: "#f5f3ff",
+  violet500: "#8b5cf6",
+  violet700: "#6d28d9",
 } as const;
 
 export const semanticColors = {
@@ -62,6 +66,8 @@ export const semanticColors = {
   errorMuted: colors.error50,
   info: colors.info500,
   infoMuted: colors.info50,
+  accentPurple: colors.violet500,
+  accentPurpleMuted: colors.violet50,
   overlay: "rgba(15, 23, 42, 0.45)",
   focusRing: colors.brand200,
 } as const;
@@ -114,6 +120,20 @@ export const typography = {
     normal: 1.5,
     relaxed: 1.65,
   },
+  kpiValue: 32,
+} as const;
+
+/** Left-border accent colors for dashboard KPI cards */
+export const kpiAccents = {
+  orders: colors.info500,
+  revenue: colors.success500,
+  pending: colors.warning500,
+  popular: colors.violet500,
+} as const;
+
+/** Bar fill for home dashboard charts */
+export const chartAccents = {
+  menuBar: colors.brand600,
 } as const;
 
 export const shadows = {
@@ -154,6 +174,14 @@ export const shadows = {
 export const layout = {
   maxContentWidth: 1200,
   sidebarWidth: 260,
+  sidebarCollapsedWidth: 56,
+} as const;
+
+export const transitions = {
+  sidebar: {
+    durationMs: 200,
+    easing: "ease",
+  },
 } as const;
 
 export const tokens = {
@@ -164,6 +192,9 @@ export const tokens = {
   typography,
   shadows,
   layout,
+  kpiAccents,
+  chartAccents,
+  transitions,
 } as const;
 
 export type ThemeTokens = typeof tokens;

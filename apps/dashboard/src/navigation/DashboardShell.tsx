@@ -4,10 +4,12 @@ import { Platform, View } from "react-native";
 import { useTheme } from "../design-system/theme";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { DashboardTabBar } from "./DashboardTabBar";
+import { useSidebarState } from "./useSidebarState";
 
 export function DashboardShell() {
   const theme = useTheme();
   const isWeb = Platform.OS === "web";
+  const { collapsed, toggle } = useSidebarState();
 
   if (isWeb) {
     return (
@@ -20,7 +22,7 @@ export function DashboardShell() {
           backgroundColor: theme.semantic.background,
         }}
       >
-        <DashboardSidebar />
+        <DashboardSidebar collapsed={collapsed} onToggle={toggle} />
         <View style={{ flex: 1, minWidth: 0 }}>
           <Slot />
         </View>

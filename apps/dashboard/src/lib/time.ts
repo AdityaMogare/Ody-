@@ -12,6 +12,13 @@ export function formatTimeAgo(iso: string): string {
   return `${days}d ago`;
 }
 
+export function getTimeOfDayGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return "Good morning";
+  if (hour < 17) return "Good afternoon";
+  return "Good evening";
+}
+
 export function isToday(dateStr: string): boolean {
   const d = new Date(dateStr);
   const now = new Date();

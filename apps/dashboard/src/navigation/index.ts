@@ -3,3 +3,4 @@ export { DashboardSidebar } from "./DashboardSidebar";
 export { DashboardTabBar } from "./DashboardTabBar";
 export { TAB_ROUTES, isTabActive, type TabHref, type TabRoute } from "./routes";
 export { usePendingOrderCount } from "./usePendingOrderCount";
+export { useSidebarState } from "./useSidebarState";

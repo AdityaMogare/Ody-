@@ -2,8 +2,9 @@ import { useGetCustomers, useGetOrders, type OrderWithItems } from "@ody/api-cli
 import { useMemo, useState } from "react";
 import { View } from "react-native";
 
-import { useTheme } from "../design-system";
 import { OrderDetailDrawer } from "../components/OrderDetailDrawer";
+import { CustomerDetailDrawer } from "../features/crm/CustomerDetailDrawer";
+import { useTheme } from "../design-system";
 import { OrderFiltersBar } from "../features/orders/OrderFiltersBar";
 import { OrdersTable } from "../features/orders/OrdersTable";
 import { filterOrdersClientSide, getCustomerMap } from "../features/orders/orders-data";
@@ -12,6 +13,7 @@ import { useOrderFilters } from "../hooks/useOrderFilters";
 export function OrdersScreen() {
   const theme = useTheme();
   const filters = useOrderFilters();
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
   const [selectedOrder, setSelectedOrder] = useState<OrderWithItems | null>(null);
 
   const ordersQuery = useGetOrders(filters.apiParams);
@@ -40,6 +42,12 @@ export function OrdersScreen() {
         customers={customerMap}
         loading={ordersQuery.isLoading || customersQuery.isLoading}
         error={ordersQuery.isError || customersQuery.isError ? "Failed to load orders." : null}
+        onOpenOrder={setSelectedOrder}
+        onSelectCustomer={setSelectedCustomerId}
+      />
+      <CustomerDetailDrawer
+        customerId={selectedCustomerId}
+        onClose={() => setSelectedCustomerId(null)}
         onOpenOrder={setSelectedOrder}
       />
       <OrderDetailDrawer order={selectedOrder} onClose={() => setSelectedOrder(null)} />

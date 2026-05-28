@@ -2,6 +2,10 @@
 
 pnpm workspace + Turborepo monorepo for the restaurant operations dashboard.
 
+**Repository:** https://github.com/AdityaMogare/Ody-
+
+**Submission package** (local run, seed, architecture, tradeoffs): [SUBMISSION.md](SUBMISSION.md)
+
 ## Structure
 
 ```text
@@ -33,29 +37,32 @@ Run these from the repository root (no `cd` into packages required).
 | `pnpm db:migrate` | Apply Drizzle migrations to the configured Postgres database. |
 | `pnpm db:seed` | Seed the database with sample restaurant data. |
 
-## Local development
+## Quick start
 
 ```bash
 pnpm install
-pnpm gen:contract
-pnpm build
-pnpm typecheck
-pnpm test
-pnpm lint
+cp services/backend/.dev.vars.example services/backend/.dev.vars
+cp services/backend/.env.example services/backend/.env
 
+pnpm gen:contract
 pnpm db:migrate
 pnpm db:seed
 
 pnpm dev:backend    # http://127.0.0.1:8787/health
-pnpm dev:dashboard  # Expo web (default port 8081)
+pnpm dev:dashboard  # http://localhost:8081
 ```
+
+See [SUBMISSION.md](SUBMISSION.md) for Docker Postgres setup, seed details, and architecture notes.
 
 ## Dashboard routes
 
 | Route | Description |
 | --- | --- |
-| `/` | Home |
+| `/` | Home — KPIs, recent orders, top items |
+| `/orders` | Order queue and detail drawer |
 | `/menu` | Menu management (categories + items) |
+| `/crm` | Customers, spend, order history |
+| `/settings` | Restaurant settings |
 | `/ui-library` | Design system showcase |
 
 ## Session progress

@@ -8,8 +8,19 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { ScrollView, Text, View } from "react-native";
 
-import { Button, Drawer, EmptyState, Skeleton, useToast } from "../design-system";
+import {
+  Badge,
+  Button,
+  Drawer,
+  EmptyState,
+  Skeleton,
+  useTheme,
+  useToast,
+} from "../design-system";
+import { DrawerSectionTitle } from "./drawer/DrawerSectionTitle";
+import { DrawerStat } from "./drawer/DrawerStat";
 import { formatPriceCents } from "../lib/menu";
+import { formatOrderStatusLabel, orderStatusVariant } from "../lib/orderStatus";
 import { getValidActions } from "../utils/orderActions";
 
 type OrderDetailDrawerProps = {
@@ -18,6 +29,7 @@ type OrderDetailDrawerProps = {
 };
 
 export function OrderDetailDrawer({ order, onClose }: OrderDetailDrawerProps) {
+  const theme = useTheme();
   const queryClient = useQueryClient();
   const toast = useToast();
   const customerId = order?.customerId ?? "";
@@ -44,64 +56,164 @@ export function OrderDetailDrawer({ order, onClose }: OrderDetailDrawerProps) {
   const customer =
     customerQuery.data?.status === 200 ? customerQuery.data.data : null;
 
+  const validActions = order ? getValidActions(order.status) : [];
+  const orderTitle = order ? `Order #${order.id.slice(0, 8)}` : "Order";
+
   return (
-    <Drawer visible={Boolean(order)} title="Order Details" onClose={onClose}>
+    <Drawer visible={Boolean(order)} title={orderTitle} onClose={onClose}>
       {!order ? null : (
-        <ScrollView contentContainerStyle={{ gap: 12 }}>
-          <View>
-            <Text>Customer</Text>
-            {customerId ? (
-              customerQuery.isLoading ? (
-                <Skeleton height={32} />
-              ) : (
-                <View>
-                  <Text>{customer?.name ?? "Unknown customer"}</Text>
-                  <Text>{customer?.email ?? "No email"}</Text>
-                  <Text>{customer?.phone ?? "No phone"}</Text>
-                </View>
-              )
-            ) : (
-              <Text>Walk-in customer</Text>
-            )}
+        <ScrollView contentContainerStyle={{ gap: theme.spacing[4] }}>
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: theme.spacing[2],
+              flexWrap: "wrap",
+            }}
+          >
+            <Badge label={formatOrderStatusLabel(order.status)} variant={orderStatusVariant(order.status)} />
+            <Text style={{ color: theme.semantic.textMuted, fontSize: theme.typography.fontSize.sm }}>
+              {new Date(order.createdAt).toLocaleString()}
+            </Text>
           </View>
 
-          <View>
-            <Text>Line items</Text>
+          <View style={{ flexDirection: "row", flexWrap: "wrap", gap: theme.spacing[3] }}>
+            <DrawerStat label="Subtotal" value={formatPriceCents(order.subtotalCents)} theme={theme} />
+            <DrawerStat label="Tax" value={formatPriceCents(order.taxCents)} theme={theme} />
+            <DrawerStat label="Total" value={formatPriceCents(order.totalCents)} theme={theme} />
+          </View>
+
+          <View style={{ gap: theme.spacing[2] }}>
+            <DrawerSectionTitle title="Customer" theme={theme} />
+            <View
+              style={{
+                padding: theme.spacing[3],
+                borderRadius: theme.radii.md,
+                borderWidth: 1,
+                borderColor: theme.semantic.border,
+                backgroundColor: theme.semantic.surface,
+                gap: theme.spacing[1],
+              }}
+            >
+              {customerId ? (
+                customerQuery.isLoading ? (
+                  <>
+                    <Skeleton height={20} width="50%" />
+                    <Skeleton height={14} width="70%" />
+                  </>
+                ) : (
+                  <>
+                    <Text
+                      style={{
+                        color: theme.semantic.text,
+                        fontSize: theme.typography.fontSize.lg,
+                        fontWeight: theme.typography.fontWeight.semibold,
+                      }}
+                    >
+                      {customer?.name ?? "Unknown customer"}
+                    </Text>
+                    <Text style={{ color: theme.semantic.textMuted, fontSize: theme.typography.fontSize.sm }}>
+                      {customer?.email ?? "No email"}
+                    </Text>
+                    {customer?.phone ? (
+                      <Text style={{ color: theme.semantic.textMuted, fontSize: theme.typography.fontSize.sm }}>
+                        {customer.phone}
+                      </Text>
+                    ) : null}
+                  </>
+                )
+              ) : (
+                <Text style={{ color: theme.semantic.textMuted, fontSize: theme.typography.fontSize.sm }}>
+                  Walk-in customer
+                </Text>
+              )}
+            </View>
+          </View>
+
+          <View style={{ gap: theme.spacing[2] }}>
+            <DrawerSectionTitle title="Line items" theme={theme} />
             {order.items.map((line) => (
               <View
                 key={line.id}
-                style={{ flexDirection: "row", justifyContent: "space-between" }}
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  gap: theme.spacing[2],
+                  padding: theme.spacing[3],
+                  borderWidth: 1,
+                  borderColor: theme.semantic.border,
+                  borderRadius: theme.radii.md,
+                  backgroundColor: theme.semantic.surface,
+                }}
               >
-                <Text>
-                  {itemNames.get(line.menuItemId) ?? "Unknown item"} x{line.quantity}
+                <View style={{ flex: 1, gap: theme.spacing[1] }}>
+                  <Text
+                    style={{
+                      color: theme.semantic.text,
+                      fontWeight: theme.typography.fontWeight.medium,
+                    }}
+                  >
+                    {itemNames.get(line.menuItemId) ?? "Unknown item"}
+                  </Text>
+                  <Text style={{ color: theme.semantic.textMuted, fontSize: theme.typography.fontSize.sm }}>
+                    {formatPriceCents(line.unitPriceCents)} × {line.quantity}
+                  </Text>
+                </View>
+                <Text
+                  style={{
+                    color: theme.semantic.text,
+                    fontWeight: theme.typography.fontWeight.semibold,
+                  }}
+                >
+                  {formatPriceCents(line.lineTotalCents)}
                 </Text>
-                <Text>{formatPriceCents(line.lineTotalCents)}</Text>
               </View>
             ))}
           </View>
 
-          <View>
-            <Text>Total: {formatPriceCents(order.totalCents)}</Text>
-            <Text>Created: {new Date(order.createdAt).toLocaleString()}</Text>
-          </View>
+          {order.notes ? (
+            <View style={{ gap: theme.spacing[2] }}>
+              <DrawerSectionTitle title="Notes" theme={theme} />
+              <View
+                style={{
+                  padding: theme.spacing[3],
+                  borderRadius: theme.radii.md,
+                  borderWidth: 1,
+                  borderColor: theme.semantic.border,
+                  backgroundColor: theme.semantic.surfaceMuted,
+                }}
+              >
+                <Text style={{ color: theme.semantic.text, fontSize: theme.typography.fontSize.sm }}>
+                  {order.notes}
+                </Text>
+              </View>
+            </View>
+          ) : null}
 
-          <View style={{ gap: 8 }}>
-            {getValidActions(order.status).length === 0 ? (
+          <View style={{ gap: theme.spacing[2] }}>
+            <DrawerSectionTitle title="Actions" theme={theme} />
+            {validActions.length === 0 ? (
               <EmptyState
                 title="No actions available"
                 message="This order is already in a terminal state."
               />
             ) : (
-              getValidActions(order.status).map((a) => (
-                <Button
-                  key={a.action}
-                  label={a.label}
-                  loading={actionMutation.isPending}
-                  onPress={() =>
-                    actionMutation.mutate({ id: order.id, data: { action: a.action } })
-                  }
-                />
-              ))
+              <View style={{ gap: theme.spacing[2] }}>
+                {validActions.map((a) => (
+                  <Button
+                    key={a.action}
+                    label={a.label}
+                    variant={a.action === "cancel" ? "danger" : "primary"}
+                    loading={actionMutation.isPending}
+                    fullWidth
+                    onPress={() =>
+                      actionMutation.mutate({ id: order.id, data: { action: a.action } })
+                    }
+                  />
+                ))}
+              </View>
             )}
           </View>
         </ScrollView>

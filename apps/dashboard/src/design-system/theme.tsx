@@ -37,6 +37,8 @@ const darkSemantic = {
   errorMuted: tokens.colors.gray800,
   info: tokens.colors.info500,
   infoMuted: tokens.colors.gray800,
+  accentPurple: tokens.colors.violet500,
+  accentPurpleMuted: tokens.colors.gray800,
   overlay: "rgba(0, 0, 0, 0.6)",
   focusRing: tokens.colors.brand700,
 } as const;
