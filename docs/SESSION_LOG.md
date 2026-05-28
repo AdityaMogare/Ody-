@@ -1,7 +1,5 @@
 # Development session log
 
-Captured from the Cursor build session for the Odyssey fullstack assignment.
-
 ## Completed phases
 
 ### Phase 1 — Monorepo scaffold ✅
