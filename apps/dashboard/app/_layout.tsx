@@ -1,32 +1,20 @@
 import { Stack } from "expo-router";
 import { StatusBar } from "expo-status-bar";
 
-import {
-  ErrorBoundary,
-  ThemeProvider,
-  ToastProvider,
-} from "../src/design-system";
-import { QueryProvider } from "../src/providers/QueryProvider";
+import { AppProviders } from "../src/providers/AppProviders";
 
 export default function RootLayout() {
   return (
-    <ThemeProvider>
-      <QueryProvider>
-        <ToastProvider>
-          <ErrorBoundary>
-            <StatusBar style="auto" />
-            <Stack>
-              <Stack.Screen name="index" options={{ title: "Ody Dashboard" }} />
-              <Stack.Screen name="menu" options={{ title: "Menu" }} />
-              <Stack.Screen name="orders" options={{ title: "Orders" }} />
-              <Stack.Screen
-                name="ui-library"
-                options={{ title: "UI Library" }}
-              />
-            </Stack>
-          </ErrorBoundary>
-        </ToastProvider>
-      </QueryProvider>
-    </ThemeProvider>
+    <AppProviders>
+      <StatusBar style="auto" />
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="(tabs)" />
+        <Stack.Screen
+          name="ui-library"
+          options={{ headerShown: true, title: "UI Library" }}
+        />
+        <Stack.Screen name="+not-found" options={{ headerShown: true, title: "Not found" }} />
+      </Stack>
+    </AppProviders>
   );
 }

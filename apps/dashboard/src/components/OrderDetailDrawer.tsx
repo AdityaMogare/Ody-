@@ -8,9 +8,9 @@ import {
 import { useQueryClient } from "@tanstack/react-query";
 import { ScrollView, Text, View } from "react-native";
 
-import { Button, Drawer, EmptyState, Skeleton, useToast } from "../../design-system";
-import { formatPriceCents } from "../../lib/menu";
-import { getValidActions } from "../../utils/orderActions";
+import { Button, Drawer, EmptyState, Skeleton, useToast } from "../design-system";
+import { formatPriceCents } from "../lib/menu";
+import { getValidActions } from "../utils/orderActions";
 
 type OrderDetailDrawerProps = {
   order: OrderWithItems | null;

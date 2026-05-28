@@ -29,6 +29,7 @@ async function main() {
   const [settings] = await db
     .insert(restaurantSettings)
     .values({
+      restaurantName: "Ody Kitchen",
       prepTimeMinutes: 20,
       autoAcceptOrders: false,
       serviceAvailable: true,

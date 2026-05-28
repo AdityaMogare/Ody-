@@ -7,7 +7,12 @@
 import type { OpeningHours } from './openingHours';
 
 export interface UpdateSettingsBody {
-  /** */
+  /** @minLength 1 */
+  restaurantName?: string;
+  /**
+   * @minimum 1
+   * @maximum 120
+   */
   prepTimeMinutes?: number;
   autoAcceptOrders?: boolean;
   serviceAvailable?: boolean;

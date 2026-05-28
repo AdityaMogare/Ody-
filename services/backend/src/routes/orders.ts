@@ -3,7 +3,7 @@ import { eq } from "drizzle-orm";
 
 import type { AppEnv } from "../env";
 import { orders } from "../db/schema";
-import { badRequest, notFound } from "../lib/errors";
+import { badRequest, notFound, unprocessableEntity } from "../lib/errors";
 import {
   CreateOrderBodySchema,
   ErrorSchema,
@@ -202,7 +202,7 @@ const orderActionRoute = createRoute({
       description: "Order status transitioned",
       content: { "application/json": { schema: OrderActionResultSchema } },
     },
-    400: {
+    422: {
       description: "Invalid transition",
       content: { "application/json": { schema: ErrorSchema } },
     },
@@ -228,7 +228,7 @@ orderRoutes.openapi(orderActionRoute, async (c) => {
   const previousStatus = existing.status;
   const nextStatus = getNextStatus(previousStatus, action as OrderAction);
   if (!nextStatus) {
-    badRequest(
+    unprocessableEntity(
       `Action "${action}" is not allowed from status "${previousStatus}"`,
       { allowedActions: allowedActions(previousStatus) },
     );

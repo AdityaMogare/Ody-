@@ -8,7 +8,7 @@
     "build": "expo export --platform web",
     "typecheck": "tsc --noEmit",
     "lint": "eslint --config ../../eslint.config.mjs app src",
-    "test": "vitest run --passWithNoTests"
+    "test": "vitest run"
   },
   "dependencies": {
     "@ody/api-client": "workspace:*",
@@ -30,7 +30,12 @@
   },
   "devDependencies": {
     "@babel/core": "^7.26.0",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
     "@types/react": "~18.3.12",
+    "@vitejs/plugin-react": "^4.3.4",
+    "jsdom": "^25.0.1",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
   }

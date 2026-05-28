@@ -8,6 +8,8 @@ import type { OpeningHours } from './openingHours';
 
 export interface RestaurantSettings {
   id: string;
+  /** @minLength 1 */
+  restaurantName: string;
   prepTimeMinutes: number;
   autoAcceptOrders: boolean;
   serviceAvailable: boolean;

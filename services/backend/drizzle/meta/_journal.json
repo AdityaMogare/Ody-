@@ -8,6 +8,13 @@
       "when": 1779927409500,
       "tag": "0000_foamy_ironclad",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1779930000000,
+      "tag": "0001_add_restaurant_name",
+      "breakpoints": true
     }
   ]
 }

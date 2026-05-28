@@ -83,12 +83,28 @@ pnpm dev:dashboard   # :8081 → /menu, /ui-library
 - **Dashboard TS**: `extends` path to `node_modules/expo/tsconfig.base.json`, `moduleResolution: "bundler"`
 - **Port 8787 in use**: kill stale `workerd` before restarting backend
 
+## Page build order
+
+Build **Orders before CRM**. CRM reuses order detail UI from a shared component.
+
+## Orders page prompt (append this line)
+
+When implementing Orders, end the prompt with:
+
+> Export `OrderDetailDrawer` from `src/components/OrderDetailDrawer.tsx` as a standalone component so it can be imported by the CRM page.
+
 ## Remaining assignment work (not done in session)
 
-- Dashboard pages: Home, Settings, CRM, Orders (beyond Menu)
-- Home KPIs, CRM spend/history, Orders filters/actions UI
+- Dashboard pages: Home, Settings, CRM (Orders + Menu largely done in repo)
+- Home KPIs, CRM spend/history (import `OrderDetailDrawer` from `src/components/OrderDetailDrawer.tsx`)
 - Targeted frontend tests beyond menu/design system
 - Optional: Loom walkthrough, production deploy notes
+
+### Phase 6 — Orders page (in repo)
+
+- `apps/dashboard/src/screens/OrdersScreen.tsx` — filters, table, drawer
+- `apps/dashboard/src/components/OrderDetailDrawer.tsx` — **shared**; CRM should import this path
+- `apps/dashboard/src/features/orders/` — `OrderFiltersBar`, `OrdersTable`, `orders-data`
 
 ## File map (high signal)
 
@@ -99,6 +115,8 @@ services/backend/scripts/seed.ts
 packages/api-client/src/generated/    # Orval output (do not edit)
 apps/dashboard/src/design-system/
 apps/dashboard/src/screens/MenuScreen.tsx
+apps/dashboard/src/screens/OrdersScreen.tsx
+apps/dashboard/src/components/OrderDetailDrawer.tsx
 apps/dashboard/app/menu.tsx
 openapi.json                          # exported spec for Orval
 AGENTS.md                             # agent rules (api-client, pipeline)

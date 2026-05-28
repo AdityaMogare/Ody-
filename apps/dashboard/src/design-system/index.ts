@@ -9,6 +9,7 @@ export { Select, type SelectProps, type SelectOption } from "./components/Select
 export { Modal, type ModalProps } from "./components/Modal";
 export { Drawer, type DrawerProps } from "./components/Drawer";
 export { Card, type CardProps, type CardVariant } from "./components/Card";
+export { KpiCard, type KpiCardProps } from "./components/KpiCard";
 export { Badge, type BadgeProps, type BadgeVariant } from "./components/Badge";
 export { DataTable, type DataTableProps, type DataTableColumn } from "./components/DataTable";
 export { ToastProvider, Toaster, useToast, type ToastMessage, type ToastVariant } from "./components/Toast";
@@ -16,3 +17,4 @@ export { Skeleton, SkeletonText, type SkeletonProps } from "./components/Skeleto
 export { EmptyState, type EmptyStateProps } from "./components/EmptyState";
 export { ErrorBoundary } from "./components/ErrorBoundary";
 export { Toggle, type ToggleProps } from "./components/Toggle";
+export { Banner, type BannerProps, type BannerVariant } from "./components/Banner";

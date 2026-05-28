@@ -3,7 +3,7 @@ import { useMemo, useState } from "react";
 import { View } from "react-native";
 
 import { useTheme } from "../design-system";
-import { OrderDetailDrawer } from "../features/orders/OrderDetailDrawer";
+import { OrderDetailDrawer } from "../components/OrderDetailDrawer";
 import { OrderFiltersBar } from "../features/orders/OrderFiltersBar";
 import { OrdersTable } from "../features/orders/OrdersTable";
 import { filterOrdersClientSide, getCustomerMap } from "../features/orders/orders-data";

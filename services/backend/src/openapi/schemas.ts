@@ -41,6 +41,7 @@ export const OrderItemSchema = selectOrderItemSchema.openapi("OrderItem");
 export const SettingsSchema = z
   .object({
     id: z.string().uuid(),
+    restaurantName: z.string().min(1),
     prepTimeMinutes: z.number().int(),
     autoAcceptOrders: z.boolean(),
     serviceAvailable: z.boolean(),
@@ -122,7 +123,8 @@ export const CustomerDetailSchema = CustomerSchema.extend({
 
 export const UpdateSettingsBodySchema = z
   .object({
-    prepTimeMinutes: z.number().int().positive().optional(),
+    restaurantName: z.string().min(1).optional(),
+    prepTimeMinutes: z.number().int().min(1).max(120).optional(),
     autoAcceptOrders: z.boolean().optional(),
     serviceAvailable: z.boolean().optional(),
     openingHours: OpeningHoursSchema.optional(),

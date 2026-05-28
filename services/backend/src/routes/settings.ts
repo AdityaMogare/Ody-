@@ -70,6 +70,7 @@ settingsRoutes.openapi(patchSettingsRoute, async (c) => {
   const [updated] = await db
     .update(restaurantSettings)
     .set({
+      restaurantName: body.restaurantName ?? existing.restaurantName,
       prepTimeMinutes: body.prepTimeMinutes ?? existing.prepTimeMinutes,
       autoAcceptOrders: body.autoAcceptOrders ?? existing.autoAcceptOrders,
       serviceAvailable: body.serviceAvailable ?? existing.serviceAvailable,

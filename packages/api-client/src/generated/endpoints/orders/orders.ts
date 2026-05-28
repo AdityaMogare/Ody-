@@ -441,20 +441,20 @@ const {mutation: mutationOptions, request: requestOptions} = options ?
   status: 200
 }
 
-export type postOrdersIdActionsResponse400 = {
-  data: Error
-  status: 400
-}
-
 export type postOrdersIdActionsResponse404 = {
   data: Error
   status: 404
+}
+
+export type postOrdersIdActionsResponse422 = {
+  data: Error
+  status: 422
 }
     
 export type postOrdersIdActionsResponseSuccess = (postOrdersIdActionsResponse200) & {
   headers: Headers;
 };
-export type postOrdersIdActionsResponseError = (postOrdersIdActionsResponse400 | postOrdersIdActionsResponse404) & {
+export type postOrdersIdActionsResponseError = (postOrdersIdActionsResponse404 | postOrdersIdActionsResponse422) & {
   headers: Headers;
 };
 

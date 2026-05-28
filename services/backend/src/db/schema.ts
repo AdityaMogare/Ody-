@@ -116,6 +116,7 @@ export const orderItems = pgTable("order_items", {
 
 export const restaurantSettings = pgTable("restaurant_settings", {
   id: uuid("id").primaryKey().defaultRandom(),
+  restaurantName: text("restaurant_name").notNull().default("Ody Kitchen"),
   prepTimeMinutes: integer("prep_time_minutes").notNull().default(15),
   autoAcceptOrders: boolean("auto_accept_orders").notNull().default(false),
   serviceAvailable: boolean("service_available").notNull().default(true),
