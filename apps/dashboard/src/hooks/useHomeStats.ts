@@ -51,15 +51,19 @@ export function useHomeStats({ orders, customers, menuItems }: UseHomeStatsInput
   return useMemo(() => {
     const customerMap = new Map(customers.map((c) => [c.id, c.name]));
     const menuNameMap = new Map(menuItems.map((m) => [m.id, m.name]));
-    const itemCounts = countItemsByMenuId(orders);
 
+    // KPI: orders placed today (local calendar date)
     const todayOrders = orders.filter((o) => isToday(o.createdAt));
+    const totalOrdersToday = todayOrders.length;
     const revenueTodayCents = todayOrders
       .filter((o) => o.status === "completed")
       .reduce((sum, o) => sum + o.totalCents, 0);
 
+    // KPI: all open pipeline orders, any date
     const pendingOrders = orders.filter((o) => PENDING_STATUSES.includes(o.status)).length;
 
+    // KPI + chart: popularity across entire order history
+    const itemCounts = countItemsByMenuId(orders);
     let mostPopularItemId: string | null = null;
     let topCount = 0;
     for (const [menuItemId, count] of itemCounts) {
@@ -85,6 +89,7 @@ export function useHomeStats({ orders, customers, menuItems }: UseHomeStatsInput
       barFraction: maxBarCount > 0 ? orderCount / maxBarCount : 0,
     }));
 
+    // Recent table: latest orders, no date filter
     const recentOrders: RecentOrderRow[] = [...orders]
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
       .slice(0, 10)
@@ -100,7 +105,7 @@ export function useHomeStats({ orders, customers, menuItems }: UseHomeStatsInput
       }));
 
     return {
-      totalOrdersToday: todayOrders.length,
+      totalOrdersToday,
       revenueTodayFormatted: formatPriceCents(revenueTodayCents),
       pendingOrders,
       mostPopularItemName,

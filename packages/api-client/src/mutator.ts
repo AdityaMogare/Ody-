@@ -24,18 +24,23 @@ export async function customFetch<T>(
   });
 
   const text = await response.text();
-  const data = text ? (JSON.parse(text) as T) : (undefined as T);
+  const body = text ? JSON.parse(text) : undefined;
 
   if (!response.ok) {
     const message =
-      typeof data === "object" &&
-      data !== null &&
-      "error" in data &&
-      typeof (data as { error: unknown }).error === "string"
-        ? (data as { error: string }).error
+      typeof body === "object" &&
+      body !== null &&
+      "error" in body &&
+      typeof (body as { error: unknown }).error === "string"
+        ? (body as { error: string }).error
         : response.statusText;
     throw new Error(message);
   }
 
-  return data;
+  // Orval-generated hooks expect { data, status, headers }, not the raw JSON body.
+  return {
+    data: body,
+    status: response.status,
+    headers: response.headers,
+  } as T;
 }

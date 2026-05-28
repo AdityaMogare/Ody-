@@ -12,12 +12,12 @@ export function formatTimeAgo(iso: string): string {
   return `${days}d ago`;
 }
 
-export function isToday(iso: string): boolean {
-  const date = new Date(iso);
+export function isToday(dateStr: string): boolean {
+  const d = new Date(dateStr);
   const now = new Date();
   return (
-    date.getFullYear() === now.getFullYear() &&
-    date.getMonth() === now.getMonth() &&
-    date.getDate() === now.getDate()
+    d.getFullYear() === now.getFullYear() &&
+    d.getMonth() === now.getMonth() &&
+    d.getDate() === now.getDate()
   );
 }
